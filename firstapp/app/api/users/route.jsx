@@ -12,3 +12,12 @@ export function GET(request) {
     },
   ]);
 }
+export async function POST(request) {
+  const body = await request.json();
+  if (!body.name)
+    return NextResponse.json({ error: "Name is required" }, { status: 400 });
+  return NextResponse.json(
+    { id: Date.now(), name: body.name },
+    { status: 201 }
+  );
+}
