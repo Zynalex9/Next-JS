@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { schemaTwo } from "../Productschema";
 
 const products = [
   {
@@ -83,4 +84,31 @@ export function GET(request, { params }) {
     );
   }
   return NextResponse.json(product);
+}
+export async function PUT(request, { params }) {
+  const body = await request.json();
+  const validation = schemaTwo.safeParse(body);
+  if (!validation.success) {
+    return NextResponse.json(
+      { error: validation.error.errors },
+      { status: 400 }
+    );
+  }
+  if (parseInt(params.id, 10) > 10) {
+    return NextResponse.json({ error: "Invalid Product" }, { status: 404 });
+  }
+  return NextResponse.json({
+    id: parseInt(params.id, 10),
+    name: body.name,
+    category: body.category,
+    price: body.price,
+    instock: body.instock,
+  });
+}
+
+export function DELETE(request, { params }) {
+  if (params.id > 10) {
+    return NextResponse.json({ error: "Inavalid Product" }, { status: 400 });
+  }
+  return NextResponse.json({});
 }
