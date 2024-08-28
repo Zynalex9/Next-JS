@@ -16,3 +16,10 @@ export async function PUT(request, { params }) {
   }
   return NextResponse.json({ id: params.id, name: body.name });
 }
+
+export function DELETE(request, { params }) {
+  if (params.id > 10) {
+    return NextResponse.json({ error: "Inavalid user" }, { status: 400 });
+  }
+  return NextResponse.json({});
+}
