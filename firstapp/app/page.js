@@ -1,10 +1,10 @@
-import Image from "next/image";
-import styles from "./page.module.css";
-import Link from "next/link";
+import Toast from "./components/Toast";  
+
 export default function Home() {
   return (
-    <>
-      <h1>This is front page</h1>
-    </>
+    <div style={{ padding: "20px" }}>
+      <h1>This is the front page</h1>
+      <Toast />
+    </div>
   );
 }
