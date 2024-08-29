@@ -1,11 +1,23 @@
 import { NextResponse } from "next/server";
 import { schema } from "../schema";
-export function GET(request, { params }) {
-  return NextResponse.json({ id: params.id, name: "Zain" });
+import prisma from '@/prisma/client';
+
+export async function GET(request, { params }) {
+  const userId = parseInt(params.id, 10); 
+  if (isNaN(userId)) {
+    return NextResponse.json({ error: 'Invalid user ID' }, { status: 400 });
+  }
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+  if (!user) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 });
+  }
+  return NextResponse.json(user);
 }
 export async function PUT(request, { params }) {
   const body = await request.json();
-  const validation = schema.safeParse(body)
+  const validation = schema.safeParse(body);
   if (!validation.success) {
     return NextResponse.json(
       { error: validation.error.errors },
