@@ -23,16 +23,21 @@ export const authOptions = {
         },
       },
       async authorize(credentials, req) {
-        if (!credentials.email || !credentials.password) return null;
+        if (!credentials?.email || !credentials?.password) return null;
+
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
-        if(!user) return null
-        const passMatch = await bcrypt.compare(
-          credentials.password,
-          user.hashPassowrd
-        );
-        return passMatch ? user : null;
+
+        if (!user) return null;
+
+        const passMatch = await bcrypt.compare(credentials.password, user.hashPassword);
+
+        if (passMatch) {
+          return user;
+        } else {
+          return null;
+        }
       },
     }),
     GoogleProvider({
@@ -44,5 +49,6 @@ export const authOptions = {
     strategy: "jwt",
   },
 };
+
 const Handler = NextAuth(authOptions);
 export { Handler as GET, Handler as POST };

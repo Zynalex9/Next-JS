@@ -3,9 +3,12 @@ import React from "react";
 import Link from "next/link";
 import "./navbar.css";
 import { useSession } from "next-auth/react";
+
 const NavBar = () => {
   const { data, status } = useSession();
+
   if (status === "loading") return null;
+
   return (
     <nav className="navbar">
       <div className="logo">
@@ -19,8 +22,10 @@ const NavBar = () => {
           <Link href="/api/auth/signin">Login</Link>
         ) : (
           <>
-            <Link href={data.user.image}>{data.user.name}</Link>
-            <Link href="api/auth/signout">Sign Out</Link>
+            <Link href="/profile">
+              {data.user?.name || "Profile"}
+            </Link>
+            <Link href="/api/auth/signout">Sign Out</Link>
           </>
         )}
       </div>
