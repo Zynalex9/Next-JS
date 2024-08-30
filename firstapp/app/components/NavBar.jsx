@@ -18,7 +18,10 @@ const NavBar = () => {
         {status === "unauthenticated" ? (
           <Link href="/api/auth/signin">Login</Link>
         ) : (
-          <Link href={data.user.image}>{data.user.name}</Link>
+          <>
+            <Link href={data.user.image}>{data.user.name}</Link>
+            <Link href="api/auth/signout">Sign Out</Link>
+          </>
         )}
       </div>
     </nav>
